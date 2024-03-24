@@ -56,15 +56,14 @@ extractBtn.addEventListener('click', async () => {
     });
     console.log(bookmarks.length);
     console.log('Final bookmarks: ', bookmarks);
-    // saveBookmarks(bookmarks);
+    saveBookmarks(bookmarks);
 });
 
 function saveBookmarks(bookmarkList) {
     const link = document.createElement('a');
-    const content = bookmarkList.toString();
-    const file = new Blob([content], { type: 'text/plain' });
+    const file = new Blob([JSON.stringify(bookmarkList)], { type: 'application/json' });
     link.href = URL.createObjectURL(file);
-    link.download = 'bookmarks.txt';
+    link.download = 'bookmarks.json';
     link.click();
     URL.revokeObjectURL(link.href);
 }
