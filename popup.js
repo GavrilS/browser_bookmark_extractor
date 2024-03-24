@@ -68,6 +68,13 @@ function saveBookmarks(bookmarkList) {
     URL.revokeObjectURL(link.href);
 }
 
-importBtn.addEventListener('click', () => {
-    console.log('Clicked importBtn!');
+importBtn.addEventListener('click', async () => {
+    const bookmarks = await loadBookmarksFile('./bookmarks.json');
+    console.log('Loaded bookmarks: ', bookmarks);
 });
+
+async function loadBookmarksFile(filePath) {
+    const fileContent = await fetch(filePath);
+    const bookmarks = await fileContent.json();
+    return bookmarks;
+}
