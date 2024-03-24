@@ -81,8 +81,9 @@ function saveBookmarks(bookmarkList) {
 }
 
 importBtn.addEventListener('click', async () => {
-    const bookmarks = await loadBookmarksFile('./bookmarks.json');
-    console.log('Loaded bookmarks: ', bookmarks);
+    const loadedBookmarks = await loadBookmarksFile('./bookmarks.json');
+    console.log('Loaded bookmarks: ', loadedBookmarks);
+    // importBookmarks(loadedBookmarks);
 });
 
 async function loadBookmarksFile(filePath) {
@@ -93,6 +94,25 @@ async function loadBookmarksFile(filePath) {
 
 function importBookmarks(bookmarks) {
     bookmarks.forEach((bookmark) => {
-
+        if (bookmark.url === '') {
+            chrome.bookmarks.create(
+                {
+                    'parentId': bookmark.parent ? bookmark.parent : '',
+                    'title': bookmark.title,
+                    'id': bookmark.id,
+                    'children': []
+                },
+                function (newFolder) {
+                    console.log('Added new folder: ', newFolder.title);
+                }
+            );
+        } else {
+            chrome.bookmarks.create({
+                'parentId': bookmark.parent,
+                'id': bookmark.id,
+                'title': bookmark.title,
+                'url': bookmark.url
+            })
+        }
     })
 }
