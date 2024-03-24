@@ -14,6 +14,18 @@ let bookmarks = [];
 
 function extractBookmarks(bookmark) {
     if (bookmark.children) {
+        let parent = '';
+        if (bookmark.parentId) {
+            parent = bookmark.parentId;
+        }
+        bookmrk = {
+            'parent': parent,
+            'id': bookmark.id,
+            'title': bookmark.title ? bookmark.title : '',
+            'url': bookmark.url ? bookmark.url : '',
+            'children': []
+        }
+        bookmarks.push(bookmrk);
         bookmark.children.forEach((bookmarkChild) => {
             extractBookmarks(bookmarkChild);
         });
@@ -77,4 +89,10 @@ async function loadBookmarksFile(filePath) {
     const fileContent = await fetch(filePath);
     const bookmarks = await fileContent.json();
     return bookmarks;
+}
+
+function importBookmarks(bookmarks) {
+    bookmarks.forEach((bookmark) => {
+
+    })
 }
