@@ -1,16 +1,4 @@
-const bookmarkDict = {};
 let bookmarks = [];
-
-// chrome.bookmarks.getTree(
-//     (results) => {
-//         console.log("Bookmarks:", results);
-//         results.forEach((bookmark) => {
-//             // console.log(bookmark);
-//             extractBookmarks(bookmark);
-//         });
-//         console.log('Bookmarks final: ', bookmarks);
-//     }
-// );
 
 function extractBookmarks(bookmark) {
     if (bookmark.children) {
@@ -51,16 +39,7 @@ extractBtn.addEventListener('click', async () => {
     if (bookmarks.length > 0) {
         bookmarks = [];
     }
-    // chrome.bookmarks.getTree(
-    //     (results) => {
-    //         console.log("Bookmarks:", results);
-    //         results.forEach((bookmark) => {
-    //             // console.log(bookmark);
-    //             extractBookmarks(bookmark);
-    //         });
-    //         console.log('Bookmarks final: ', bookmarks);
-    //     }
-    // );
+
     const results = await chrome.bookmarks.getTree();
     console.log('Promise results: ', results);
     results.forEach((bookmark) => {
