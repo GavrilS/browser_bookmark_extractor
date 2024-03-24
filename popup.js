@@ -35,30 +35,31 @@ function extractBookmarks(bookmark) {
 const extractBtn = document.getElementById('extract-full-bookmarks');
 const importBtn = document.getElementById('import-bookmarks');
 
-extractBtn.addEventListener('click', () => {
+extractBtn.addEventListener('click', async () => {
     if (bookmarks.length > 0) {
         bookmarks = [];
     }
-    chrome.bookmarks.getTree(
-        (results) => {
-            console.log("Bookmarks:", results);
-            results.forEach((bookmark) => {
-                // console.log(bookmark);
-                extractBookmarks(bookmark);
-            });
-            console.log('Bookmarks final: ', bookmarks);
-        }
-    );
-
+    // chrome.bookmarks.getTree(
+    //     (results) => {
+    //         console.log("Bookmarks:", results);
+    //         results.forEach((bookmark) => {
+    //             // console.log(bookmark);
+    //             extractBookmarks(bookmark);
+    //         });
+    //         console.log('Bookmarks final: ', bookmarks);
+    //     }
+    // );
+    const results = await chrome.bookmarks.getTree();
+    console.log('Promise results: ', results);
+    results.forEach((bookmark) => {
+        extractBookmarks(bookmark);
+    });
     console.log(bookmarks.length);
-    saveBookmarks(bookmarks);
+    console.log('Final bookmarks: ', bookmarks);
+    // saveBookmarks(bookmarks);
 });
 
 function saveBookmarks(bookmarkList) {
-    // const blob = new Blob([bookmarkList.toString()], {
-    //     type: 'text/plain;charset=utf-8',
-    // });
-    // saveAs(blob, 'bookmarks.txt');
     const link = document.createElement('a');
     const content = bookmarkList.toString();
     const file = new Blob([content], { type: 'text/plain' });
